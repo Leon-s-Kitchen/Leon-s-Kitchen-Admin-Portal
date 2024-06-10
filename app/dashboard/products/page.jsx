@@ -22,7 +22,7 @@ const ProductsPage = async ({ searchParams }) => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <td>Title</td>
+            <td className={styles.titleColumn}>Title</td>
             <td>Description</td>
             <td>Price</td>
             <td>Created At</td>
@@ -33,7 +33,7 @@ const ProductsPage = async ({ searchParams }) => {
         <tbody>
           {products.map((product) => (
             <tr key={product.id}>
-              <td>
+              <td className={styles.titleColumn}>
                 <div className={styles.product}>
                   <Image
                     src={product.img || "/noproduct.jpg"}
@@ -45,7 +45,7 @@ const ProductsPage = async ({ searchParams }) => {
                   {product.title}
                 </div>
               </td>
-              <td>{product.desc}</td>
+              <td className={styles.desc}>{product.desc}</td>
               <td>LKR <span> </span>{product.price}</td>
               <td>{product.createdAt?.toString().slice(4, 16)}</td>
               <td>{product.size}</td>
