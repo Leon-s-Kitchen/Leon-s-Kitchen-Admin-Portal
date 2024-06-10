@@ -26,7 +26,7 @@ const ProductsPage = async ({ searchParams }) => {
             <td>Description</td>
             <td>Price</td>
             <td>Created At</td>
-            <td>Stock</td>
+            <td>Portion</td>
             <td>Action</td>
           </tr>
         </thead>
@@ -38,17 +38,17 @@ const ProductsPage = async ({ searchParams }) => {
                   <Image
                     src={product.img || "/noproduct.jpg"}
                     alt=""
-                    width={40}
-                    height={40}
+                    width={100}
+                    height={100}
                     className={styles.productImage}
                   />
                   {product.title}
                 </div>
               </td>
               <td>{product.desc}</td>
-              <td>${product.price}</td>
+              <td>LKR <span> </span>{product.price}</td>
               <td>{product.createdAt?.toString().slice(4, 16)}</td>
-              <td>{product.stock}</td>
+              <td>{product.size}</td>
               <td>
                 <div className={styles.buttons}>
                   <Link href={`/dashboard/products/${product.id}`}>

@@ -69,12 +69,23 @@ export const updateUser = async (formData) => {
   redirect("/dashboard/users");
 };
 
+
+
 export const addProduct = async (formData) => {
-  const { title, desc, price, stock, color, size } =
-    Object.fromEntries(formData);
+  const { title, desc, price, stock, color, size } = Object.fromEntries(formData);
+
+  let imageBase64 = '';
+
+  // Process the image file
+  const imageFile = formData.get('image');
+  if (imageFile && imageFile.size > 0) {
+    const buffer = await imageFile.arrayBuffer();
+    const base64String = Buffer.from(buffer).toString('base64');
+    imageBase64 = `data:${imageFile.type};base64,${base64String}`;
+  }
 
   try {
-    connectToDB();
+    await connectToDB();
 
     const newProduct = new Product({
       title,
@@ -83,6 +94,7 @@ export const addProduct = async (formData) => {
       stock,
       color,
       size,
+      img: imageBase64,  // Save the image as base64 string
     });
 
     await newProduct.save();
@@ -94,6 +106,7 @@ export const addProduct = async (formData) => {
   revalidatePath("/dashboard/products");
   redirect("/dashboard/products");
 };
+
 
 export const updateProduct = async (formData) => {
   const { id, title, desc, price, stock, color, size } =

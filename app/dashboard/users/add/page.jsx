@@ -5,15 +5,15 @@ const AddUserPage = () => {
   return (
     <div className={styles.container}>
       <form action={addUser} className={styles.form}>
-        <input type="text" placeholder="username" name="username" required />
-        <input type="email" placeholder="email" name="email" required />
+        <input type="text" placeholder="Username" name="username" required />
+        <input type="email" placeholder="Email" name="email" required />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           name="password"
           required
         />
-        <input type="phone" placeholder="phone" name="phone" />
+        <input type="phone" placeholder="Mobile No" name="phone" />
         <select name="isAdmin" id="isAdmin">
           <option value={false}>Is Admin?</option>
           <option value={true}>Yes</option>
@@ -27,7 +27,7 @@ const AddUserPage = () => {
         <textarea
           name="address"
           id="address"
-          rows="10"
+          rows="5"
           placeholder="Address"
         ></textarea>
         <input type="file" name="image" id="image" accept="image/*" />
