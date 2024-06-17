@@ -3,59 +3,64 @@ import Link from "next/link";
 import styles from "@/app/ui/dashboard/products/products.module.css";
 import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
-import { fetchProductsEmp } from "@/app/lib/data";
-import { deleteproductEmp } from "@/app/lib/actions";
+import { fetchOrders } from "@/app/lib/data";
+import { deleteOrder } from "@/app/lib/actions";
 
-const Orders = async ({ searchParams }) => {
-  
+const ProductsPageEmp = async ({ searchParams }) => {
+  const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
+  const { count, orders } = await fetchOrders(q, page);
 
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder="Search for a Name..." />
-        <Link href="/dashboard/Employees/add">
+        <Search placeholder="Search for a User, Name, or Mobile No..." />
+        <Link href="/dashboard/orders/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
       </div>
       <table className={styles.table}>
         <thead>
           <tr>
-            <td>Employee ID</td>
-            <td>NIC Number</td>
+            <td>User</td>
             <td>Name</td>
-            <td>Updated Date</td>
-            <td>Phone Number</td>
-            <td>Action</td>
+            <td>Mobile No</td>
+            <td>Items</td>
+            <td>Total Amount</td>
+            <td>Delivery Fee</td>
+            <td>Destination</td>
+            <td>Created Time</td>
+            <td>Actions</td>
           </tr>
         </thead>
         <tbody>
-          {productsEmp.map((productEmp) => (
-            <tr key={productEmp.id}>
+          {orders.map((order) => (
+            <tr key={order._id}>
+              <td>{order.user}</td>
+              <td>{order.name}</td>
+              <td>{order.mobileNo}</td> {/* Ensure this line is present */}
               <td>
-                <div className={styles.productEmp}>
-                  <Image
-                    src={productEmp.img || "/noproduct.jpg"}
-                    alt=""
-                    width={40}
-                    height={40}
-                    className={styles.productImage}
-                  />
-                  {productEmp.title}
-                </div>
+                <ul>
+                  {order.items.map((item) => (
+                    <li key={item._id}>
+                      {item.name} (x{item.quantity}) - ${item.price}
+                    </li>
+                  ))}
+                </ul>
               </td>
-              <td>{productEmp.desc}</td>
-              <td>{productEmp.price}</td>
-              <td>{productEmp.createdAt?.toString().slice(4, 16)}</td>
-              <td>{productEmp.stock}</td>
+              <td>${order.totalAmount}</td>
+              <td>${order.deliveryFee}</td>
+              <td>{order.destination}</td>
+              <td>{new Date(order.createdAt).toDateString()}</td>
               <td>
                 <div className={styles.buttons}>
-                  <Link href={`/dashboard/Employees/${productEmp.id}`}>
+                  <Link href={`/dashboard/orders/${order._id}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
                   </Link>
-                  <form action={deleteproductEmp}>
-                    <input type="hidden" name="id" value={productEmp.id} />
+                  <form action={deleteOrder}>
+                    <input type="hidden" name="id" value={order._id.toString()} />
                     <button className={`${styles.button} ${styles.delete}`}>
                       Delete
                     </button>
@@ -71,4 +76,4 @@ const Orders = async ({ searchParams }) => {
   );
 };
 
-export default Orders;
+export default ProductsPageEmp;

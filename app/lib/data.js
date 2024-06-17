@@ -1,5 +1,6 @@
 import { Product, ProductInv, User, ProductEmp } from "./models";
 import { connectToDB } from "./utils";
+import Order from './orderModel'
 
 export const fetchUsers = async (q, page) => {
   const regex = new RegExp(q, "i");
@@ -127,6 +128,39 @@ export const fetchProductEmp = async (id) => {
   }
 };
 
+// Function to fetch orders with pagination and search
+export const fetchOrders = async (q, page) => {
+  const regex = new RegExp(q, 'i');
+  const ITEM_PER_PAGE = 5;
+
+  try {
+    await connectToDB();
+    const query = {
+      $or: [
+        { user: { $regex: regex } },
+        { name: { $regex: regex } },
+        { mobileNo: { $regex: regex } }
+      ]
+    };
+
+    console.log('Query:', query);
+
+    const count = await Order.countDocuments(query);
+    const orders = await Order.find(query)
+      .limit(ITEM_PER_PAGE)
+      .skip(ITEM_PER_PAGE * (page - 1));
+
+    console.log('Fetched Orders:', orders);
+
+    return { count, orders };
+  } catch (err) {
+    console.error('Failed to fetch orders!', err);
+    throw new Error('Failed to fetch orders!');
+  }
+};
+
+
+// Function to fetch a single order by ID
 
 
 
