@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Product, User,ProductInv } from "./models";
+import { Product, User, ProductInv, ProductEmp } from "./models";
 import { connectToDB } from "./utils";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
@@ -258,4 +258,90 @@ export const deleteProductInv = async (formData) => {
   }
 
   revalidatePath("/dashboard/Inventory");
+};
+
+export const addproductEmp = async (formData) => {
+  const { title, desc, price, stock, color, size } =
+    Object.fromEntries(formData);
+
+
+    let imageBase64 = "";
+
+  // Process the image file
+  const imageFile = formData.get("image");
+  if (imageFile && imageFile.size > 0) {
+    const buffer = await imageFile.arrayBuffer();
+    const base64String = Buffer.from(buffer).toString("base64");
+    imageBase64 = `data:${imageFile.type};base64,${base64String}`;
+  }
+
+
+
+  try {
+    connectToDB();
+
+    const newproductEmp = new ProductEmp({
+      title,
+      desc,
+      price,
+      stock,
+      color,
+      size,
+      img: imageBase64,
+    });
+
+    await newproductEmp.save();
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to create Employee!");
+  }
+
+  revalidatePath("/dashboard/Employees");
+  redirect("/dashboard/Employees");
+};
+
+export const updateProductEmp = async (formData) => {
+  const { id, title, desc, price, stock, color, size } =
+    Object.fromEntries(formData);
+
+  try {
+    connectToDB();
+
+    const updateFieldsEmp = {
+      title,
+      desc,
+      price,
+      stock,
+      color,
+      size,
+    };
+
+    Object.keys(updateFieldsEmp).forEach(
+      (key) =>
+        (updateFieldsEmp[key] === "" || undefined) &&
+        delete updateFieldsEmp[key]
+    );
+
+    await ProductEmp.findByIdAndUpdate(id, updateFieldsEmp);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to update Employee!");
+  }
+
+  revalidatePath("/dashboard/Employees");
+  redirect("/dashboard/Employees");
+};
+
+export const deleteproductEmp = async (formData) => {
+  const { id } = Object.fromEntries(formData);
+
+  try {
+    connectToDB();
+    await ProductEmp.findByIdAndDelete(id);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to delete a Employee");
+  }
+
+  revalidatePath("/dashboard/Employees");
 };

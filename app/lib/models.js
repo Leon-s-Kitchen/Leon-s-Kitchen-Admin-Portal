@@ -107,7 +107,39 @@ const productSchemaInv = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+const productSchemaEmp = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    desc: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: String,
+      required: true,
+      min: 0,
+    },
+    stock: {
+      type: String,
+      required: true,
+      min: 0,
+    },
+    img: {
+      type: String,
+    },
+    color: {
+      type: String,
+    },
+    size: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
 
 
 
@@ -119,6 +151,7 @@ export const Product =
   mongoose.models.Product || mongoose.model("Product", productSchema);
 
 export const ProductInv =mongoose.models.ProductInv || mongoose.model("ProductInv", productSchemaInv);
+export const ProductEmp =mongoose.models.ProductEmp || mongoose.model("ProductEmp", productSchemaEmp);
 
 
 

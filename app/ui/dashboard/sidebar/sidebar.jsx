@@ -35,8 +35,8 @@ const menuItems = [
         icon: <MdShoppingBag />,
       },
       {
-        title: "Transactions",
-        path: "/dashboard/transactions",
+        title: "Orders",
+        path: "/dashboard/Orders",
         icon: <MdAttachMoney />,
       },
     ],
@@ -53,6 +53,11 @@ const menuItems = [
         title: "Reports",
         path: "/dashboard/reports",
         icon: <MdAnalytics />,
+      },
+      {
+        title: "Employees",
+        path: "/dashboard/Employees",
+        icon: <MdWork />,
       },
       {
         title: "Teams",
