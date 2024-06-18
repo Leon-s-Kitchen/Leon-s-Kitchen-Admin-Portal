@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import styles from "@/app/ui/dashboard/products/products.module.css";
+import styles from "@/app/ui/dashboard/orders/orders.module.css";
 import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import { fetchOrders } from "@/app/lib/data";
@@ -22,7 +22,7 @@ const ProductsPageEmp = async ({ searchParams }) => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <td>User</td>
+            {/* <td>User</td> */}
             <td>Name</td>
             <td>Mobile No</td>
             <td>Items</td>
@@ -36,35 +36,43 @@ const ProductsPageEmp = async ({ searchParams }) => {
         <tbody>
           {orders.map((order) => (
             <tr key={order._id}>
-              <td>{order.user}</td>
+              {/* <td>{order.user}</td> */}
               <td>{order.name}</td>
               <td>{order.mobileNo}</td> {/* Ensure this line is present */}
               <td>
                 <ul>
                   {order.items.map((item) => (
                     <li key={item._id}>
-                      {item.name} (x{item.quantity}) - ${item.price}
+                      {item.name} (x{item.quantity}) - Rs.{item.price}
                     </li>
                   ))}
                 </ul>
               </td>
-              <td>${order.totalAmount}</td>
-              <td>${order.deliveryFee}</td>
+              <td>Rs{order.totalAmount}</td>
+              <td>Rs{order.deliveryFee}</td>
               <td>{order.destination}</td>
-              <td>{new Date(order.createdAt).toDateString()}</td>
+              <td>
+                {new Intl.DateTimeFormat("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }).format(new Date(order.createdAt))}
+              </td>
               <td>
                 <div className={styles.buttons}>
-                  <Link href={`/dashboard/orders/${order._id}`}>
-                    <button className={`${styles.button} ${styles.view}`}>
-                      View
-                    </button>
-                  </Link>
-                  <form action={deleteOrder}>
-                    <input type="hidden" name="id" value={order._id.toString()} />
-                    <button className={`${styles.button} ${styles.delete}`}>
-                      Delete
-                    </button>
-                  </form>
+                  <button className={`${styles.button} ${styles.accept}`}>
+                    Accept Order
+                  </button>
+
+                  <button className={`${styles.button} ${styles.out}`}>
+                    Out Of Delivery
+                  </button>
+                  <button className={`${styles.button} ${styles.finish}`}>
+                    Finish Order
+                  </button>
                 </div>
               </td>
             </tr>

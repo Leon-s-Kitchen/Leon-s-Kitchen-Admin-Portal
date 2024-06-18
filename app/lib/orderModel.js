@@ -13,8 +13,6 @@ const itemSchema = new Schema({
 const orderSchema = new Schema({
   _id: { type: Schema.Types.ObjectId, required: true },
   user: { type: String, required: true },
-  name: { type: String, required: true },
-  mobileNo: { type: String, required: true },
   items: { type: [itemSchema], required: true },
   totalAmount: { type: Number, required: true },
   deliveryFee: { type: Number, required: true },
