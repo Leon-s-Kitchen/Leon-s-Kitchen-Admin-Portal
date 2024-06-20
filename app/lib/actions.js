@@ -6,6 +6,34 @@ import { connectToDB } from "./utils";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import { signIn } from "../auth";
+import  AcceptedOrder  from './acceptedOrderModel'
+
+
+export const acceptOrder = async (orderId) => {
+  try {
+    // Send a request to your backend server to save the accepted order
+    const response = await fetch(`/api/orders/accept/${orderId}`, {
+      method: "POST",
+      // Optionally, you can send additional data in the request body
+      // body: JSON.stringify({ orderId }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to accept order");
+    }
+
+    // Optionally, you can handle the response from the server
+    const data = await response.json();
+    return data; // Return any relevant data from the response
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
 
 export const addUser = async (formData) => {
   const { username, email, password, phone, address, isAdmin, isActive } =
@@ -106,6 +134,9 @@ export const addProduct = async (formData) => {
   revalidatePath("/dashboard/products");
   redirect("/dashboard/products");
 };
+
+
+
 
 
 export const updateProduct = async (formData) => {

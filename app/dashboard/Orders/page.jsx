@@ -1,3 +1,4 @@
+'use client';
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/app/ui/dashboard/orders/orders.module.css";
@@ -5,11 +6,24 @@ import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import { fetchOrders } from "@/app/lib/data";
 import { deleteOrder } from "@/app/lib/actions";
+import { acceptOrder } from "@/app/lib/actions";
 
 const ProductsPageEmp = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const { count, orders } = await fetchOrders(q, page);
+  const handleAcceptOrder = async (orderId) => {
+    try {
+      // Call the function to accept the order
+      await acceptOrder(orderId);
+      // Optionally, you can update the UI or show a success message
+      console.log("Order accepted successfully!");
+    } catch (error) {
+      console.error("Error accepting order:", error);
+      // Handle error, show error message, etc.
+    }
+  };
+ 
 
   return (
     <div className={styles.container}>
@@ -63,10 +77,16 @@ const ProductsPageEmp = async ({ searchParams }) => {
               </td>
               <td>
                 <div className={styles.buttons}>
-                  <button className={`${styles.button} ${styles.accept}`}>
-                    Accept Order
-                  </button>
-
+            
+                
+                <button
+  className={styles.addButton}
+  onClick={() => handleAcceptOrder(order._id)}
+>
+  Accept Order
+</button>
+      
+           
                   <button className={`${styles.button} ${styles.out}`}>
                     Out Of Delivery
                   </button>
