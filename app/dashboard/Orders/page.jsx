@@ -1,4 +1,3 @@
-'use client';
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/app/ui/dashboard/orders/orders.module.css";
@@ -6,24 +5,18 @@ import Search from "@/app/ui/dashboard/search/search";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import { fetchOrders } from "@/app/lib/data";
 import { deleteOrder } from "@/app/lib/actions";
-import { acceptOrder } from "@/app/lib/actions";
+import {
+  addProduct,
+  addproductEmp,
+  saveAcceptedOrder,
+  saveoutofdelivery,
+  savefinisheddelivery,
+} from "@/app/lib/actions";
 
 const ProductsPageEmp = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const { count, orders } = await fetchOrders(q, page);
-  const handleAcceptOrder = async (orderId) => {
-    try {
-      // Call the function to accept the order
-      await acceptOrder(orderId);
-      // Optionally, you can update the UI or show a success message
-      console.log("Order accepted successfully!");
-    } catch (error) {
-      console.error("Error accepting order:", error);
-      // Handle error, show error message, etc.
-    }
-  };
- 
 
   return (
     <div className={styles.container}>
@@ -76,23 +69,162 @@ const ProductsPageEmp = async ({ searchParams }) => {
                 }).format(new Date(order.createdAt))}
               </td>
               <td>
-                <div className={styles.buttons}>
-            
+                {/* <div className={styles.container}>
+                  <form action={saveAcceptedOrder} className={styles.form}>
+                    <div className={styles.buttons}>
+
+
+                    <input type="hidden" name="orderId" value={order._id.toString()} />
+                    <input type="hidden" name="name" value={order.name} />
+                    <input type="hidden" name="mobileNo" value={order.mobileNo} />
+                    <input type="hidden" name="items" value={JSON.stringify(order.items)} />
+                    <input type="hidden" name="totalAmount" value={order.totalAmount} />
+                    <input type="hidden" name="deliveryFee" value={order.deliveryFee} />
+                    <input type="hidden" name="destination" value={order.destination} />
+                    <input type="hidden" name="status" value="Accepted" />
+
+                      <button className={styles.addButton}>Accept Order</button>
+                      <button className={styles.addButton}>Out of Delivery</button>
+
+
+
+                  
+                      <button className={styles.addButton}>Finishd</button>
+
+
+
+
                 
-                <button
-  className={styles.addButton}
-  onClick={() => handleAcceptOrder(order._id)}
->
-  Accept Order
-</button>
-      
-           
-                  <button className={`${styles.button} ${styles.out}`}>
-                    Out Of Delivery
-                  </button>
-                  <button className={`${styles.button} ${styles.finish}`}>
-                    Finish Order
-                  </button>
+                    </div>
+                  </form>
+
+                </div> */}
+
+                <div style={{ display: "flex", gap: "10px" }}>
+                  {/* Accept Order Form */}
+                  <form action={saveAcceptedOrder} className={styles.form}>
+                    <input
+                      type="hidden"
+                      name="orderId"
+                      value={order._id.toString()}
+                    />
+                    <input type="hidden" name="name" value={order.name} />
+                    <input
+                      type="hidden"
+                      name="mobileNo"
+                      value={order.mobileNo}
+                    />
+                    <input
+                      type="hidden"
+                      name="items"
+                      value={JSON.stringify(order.items)}
+                    />
+                    <input
+                      type="hidden"
+                      name="totalAmount"
+                      value={order.totalAmount}
+                    />
+                    <input
+                      type="hidden"
+                      name="deliveryFee"
+                      value={order.deliveryFee}
+                    />
+                    <input
+                      type="hidden"
+                      name="destination"
+                      value={order.destination}
+                    />
+                    <input type="hidden" name="status" value="Accepted" />
+                    <button type="submit" className={styles.addButton}>
+                      Accept Order
+                    </button>
+                  </form>
+
+                  {/* Out of Delivery Form */}
+                  <form action={saveoutofdelivery} className={styles.form}>
+                    <input
+                      type="hidden"
+                      name="orderId"
+                      value={order._id.toString()}
+                    />
+                    <input type="hidden" name="name" value={order.name} />
+                    <input
+                      type="hidden"
+                      name="mobileNo"
+                      value={order.mobileNo}
+                    />
+                    <input
+                      type="hidden"
+                      name="items"
+                      value={JSON.stringify(order.items)}
+                    />
+                    <input
+                      type="hidden"
+                      name="totalAmount"
+                      value={order.totalAmount}
+                    />
+                    <input
+                      type="hidden"
+                      name="deliveryFee"
+                      value={order.deliveryFee}
+                    />
+                    <input
+                      type="hidden"
+                      name="destination"
+                      value={order.destination}
+                    />
+                    <input type="hidden" name="status" value="OutOfDelivery" />
+                    <button type="submit" className={styles.addButton}>
+                      Out of Delivery
+                    </button>
+                  </form>
+
+         
+                  <form action={savefinisheddelivery} className={styles.form}>
+                    <input
+                      type="hidden"
+                      name="orderId"
+                      value={order._id.toString()}
+                    />
+                    <input type="hidden" name="name" value={order.name} />
+                    <input
+                      type="hidden"
+                      name="mobileNo"
+                      value={order.mobileNo}
+                    />
+                    <input
+                      type="hidden"
+                      name="items"
+                      value={JSON.stringify(order.items)}
+                    />
+                    <input
+                      type="hidden"
+                      name="totalAmount"
+                      value={order.totalAmount}
+                    />
+                    <input
+                      type="hidden"
+                      name="deliveryFee"
+                      value={order.deliveryFee}
+                    />
+                    <input
+                      type="hidden"
+                      name="destination"
+                      value={order.destination}
+                    />
+                    <input type="hidden" name="status" value="FinishedDelivery" />
+                    <button type="submit" className={styles.addButton}>
+                      Finished Delivery
+                    
+                    </button>
+                  </form>
+
+
+
+
+
+
+                  
                 </div>
               </td>
             </tr>

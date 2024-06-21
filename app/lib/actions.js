@@ -7,31 +7,10 @@ import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import { signIn } from "../auth";
 import  AcceptedOrder  from './acceptedOrderModel'
+import OutOfDelivery  from './outofdelivery'
+import FinishedOrder  from './finishedorder'
 
 
-export const acceptOrder = async (orderId) => {
-  try {
-    // Send a request to your backend server to save the accepted order
-    const response = await fetch(`/api/orders/accept/${orderId}`, {
-      method: "POST",
-      // Optionally, you can send additional data in the request body
-      // body: JSON.stringify({ orderId }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to accept order");
-    }
-
-    // Optionally, you can handle the response from the server
-    const data = await response.json();
-    return data; // Return any relevant data from the response
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
 
 
 
@@ -375,4 +354,84 @@ export const deleteproductEmp = async (formData) => {
   }
 
   revalidatePath("/dashboard/Employees");
+};
+
+export const saveAcceptedOrder = async (formData) => {
+  const { orderId, user, name, mobileNo, items, totalAmount, deliveryFee, destination } = Object.fromEntries(formData);
+
+  try {
+    connectToDB();
+
+    const newAcceptedOrder = new AcceptedOrder({
+      orderId,
+      user,
+      name,
+      mobileNo,
+      items,
+      totalAmount,
+      deliveryFee,
+      destination,
+    });
+
+    await newAcceptedOrder.save();
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to save order!");
+  }
+
+
+};
+
+
+export const saveoutofdelivery = async (formData) => {
+  const { orderId, user, name, mobileNo, items, totalAmount, deliveryFee, destination } = Object.fromEntries(formData);
+
+  try {
+    connectToDB();
+
+    const newOutOfDelivery = new OutOfDelivery({
+      orderId,
+      user,
+      name,
+      mobileNo,
+      items,
+      totalAmount,
+      deliveryFee,
+      destination,
+    });
+
+    await newOutOfDelivery.save();
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to save order!");
+  }
+
+
+};
+
+
+export const savefinisheddelivery = async (formData) => {
+  const { orderId, user, name, mobileNo, items, totalAmount, deliveryFee, destination } = Object.fromEntries(formData);
+
+  try {
+    connectToDB();
+
+    const newFinishedOrder= new FinishedOrder({
+      orderId,
+      user,
+      name,
+      mobileNo,
+      items,
+      totalAmount,
+      deliveryFee,
+      destination,
+    });
+
+    await newFinishedOrder.save();
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to save order!");
+  }
+
+
 };

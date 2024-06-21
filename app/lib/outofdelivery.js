@@ -1,7 +1,7 @@
 // acceptedOrderModel.js
 import mongoose from 'mongoose';
 
-const acceptedOrderSchema = new mongoose.Schema({
+const outofdeliverySchema = new mongoose.Schema({
   orderId: { type: String, required: true, unique: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
@@ -16,9 +16,9 @@ const acceptedOrderSchema = new mongoose.Schema({
   deliveryFee: { type: Number, required: true },
   destination: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
-  status: { type: String, default: 'Order Accepted' },
+  status: { type: String, default: 'Out of delivery' },
 });
 
-const AcceptedOrder = mongoose.models.AcceptedOrder || mongoose.model('AcceptedOrder', acceptedOrderSchema);
+const OutOfDelivery = mongoose.models.OutOfDelivery || mongoose.model('Outofdelivery', outofdeliverySchema);
 
-export default AcceptedOrder;
+export default OutOfDelivery;

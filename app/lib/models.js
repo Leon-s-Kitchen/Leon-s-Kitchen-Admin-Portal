@@ -142,6 +142,107 @@ const productSchemaEmp = new mongoose.Schema(
 );
 
   
+const acceptorderschema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    mobileNo: {
+      type: String,
+      required: true,
+    },
+    items: {
+      type: Array,
+      required: true,
+    },
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    deliveryFee: {
+      type: Number,
+      required: true,
+    },
+    destination: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+
+const outofdelivery = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    mobileNo: {
+      type: String,
+      required: true,
+    },
+    items: {
+      type: Array,
+      required: true,
+    },
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    deliveryFee: {
+      type: Number,
+      required: true,
+    },
+    destination: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+
+
+const finishorder = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    mobileNo: {
+      type: String,
+      required: true,
+    },
+    items: {
+      type: Array,
+      required: true,
+    },
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    deliveryFee: {
+      type: Number,
+      required: true,
+    },
+    destination: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+
+
+
+
+
+
+
+
 
 
 
@@ -154,7 +255,10 @@ export const Product =
 
 export const ProductInv =mongoose.models.ProductInv || mongoose.model("ProductInv", productSchemaInv);
 export const ProductEmp =mongoose.models.ProductEmp || mongoose.model("ProductEmp", productSchemaEmp);
+export const AcceptedOrder =
+  mongoose.models.AcceptedOrder ||
+  mongoose.model("AcceptedOrder", acceptorderschema);
 
+export const OutOfDelivery = mongoose.models.OutOfDelivery || mongoose.model("OutOfDelivery", outofdelivery);
 
-
-
+export const FinishedOrder = mongoose.models.FinishedOrder || mongoose.model("FinishedOrder", finishorder);
