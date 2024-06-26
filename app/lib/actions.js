@@ -357,7 +357,7 @@ export const deleteproductEmp = async (formData) => {
 };
 
 export const saveAcceptedOrder = async (formData) => {
-  const { orderId, user, name, mobileNo, items, totalAmount, deliveryFee, destination } = Object.fromEntries(formData);
+  const { orderId, user, name, mobileNo, items, totalAmount, deliveryFee, destination,status } = Object.fromEntries(formData);
 
   try {
     connectToDB();
@@ -371,6 +371,7 @@ export const saveAcceptedOrder = async (formData) => {
       totalAmount,
       deliveryFee,
       destination,
+      status
     });
 
     await newAcceptedOrder.save();
